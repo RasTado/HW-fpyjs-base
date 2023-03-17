@@ -64,17 +64,10 @@ console.log('catalog after remove: \n', testCatalog.list)
 
 class BasketGood extends Good {
     constructor(good) {
-        super(good.id, good.name, good.description, good.sizes, good.price, good.available)
+        super(good.id, good.name, good.discription, good.size, good.price, good.available)
         this.amount = 0
     }
 }
-
-const baskobj1 = new BasketGood(obj1)
-const baskobj2 = new BasketGood(obj2)
-const baskobj3 = new BasketGood(obj3)
-const baskobj4 = new BasketGood(obj4)
-const baskobj5 = new BasketGood(obj5)
-const baskobj6 = new BasketGood(obj6)
 
 class Basket {
     constructor() {
@@ -90,11 +83,14 @@ class Basket {
     }
 
     add(good, amount) {
-        if (good.constructor.name === 'BasketGood' && amount > 0) {
-            good.amount += amount
-            if (this.goods.findIndex(item => item === good) === -1) {
-                this.goods.push(good)
-            }
+        let goodInBasket = this.goods.filter(item => item.id == good.id)[0]
+        if (goodInBasket) {
+            goodInBasket.amount += amount;
+        } 
+        else {
+            let basketgoodtest = new BasketGood(good)
+            good.amount = amount
+            this.goods.push(good)
         }
     }
 
@@ -115,19 +111,27 @@ class Basket {
 }
 
 const testBasket = new Basket()
-testBasket.add(baskobj1, 1)
-testBasket.add(baskobj2, 2)
-testBasket.add(baskobj3, 3)
-testBasket.add(baskobj4, 4)
-testBasket.add(baskobj6, 6)
-testBasket.add(baskobj4, 4)
-testBasket.add(baskobj1, 1)
+
+testBasket.add(obj1, 1)
+testBasket.add(obj2, 2)
+testBasket.add(obj3, 3)
+testBasket.add(obj4, 4)
+testBasket.add(obj6, 6)
+testBasket.add(obj4, 4)
+testBasket.add(obj1, 1)
+
 console.log('Add objects: \n', testBasket)
-testBasket.remove(baskobj4, 2)
-testBasket.remove(baskobj3, 3)
+testBasket.remove(obj4, 2)
+testBasket.remove(obj3, 3)
 console.log('Remove objects (available=false): \n', testBasket)
 testBasket.removeUnavailable()
 console.log('Remove all objects: \n', testBasket)
 console.log('\n Total sum: ', testBasket.totalSum, '\n Total amount: ', testBasket.totalAmount)
 testBasket.clear()
 console.log('clear basket: \n', testBasket)
+const testBasket2 = new Basket()
+testBasket2.add(obj1, 1)
+testBasket2.add(obj2, 2)
+testBasket2.add(obj3, 3)
+testBasket2.add(obj4, 1)
+console.log('\n', testBasket2, '\n Total sum: ', testBasket2.totalSum, '\n Total amount: ', testBasket2.totalAmount)
