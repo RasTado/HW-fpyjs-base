@@ -89,8 +89,8 @@ class Basket {
         } 
         else {
             let basketgoodtest = new BasketGood(good)
-            good.amount = amount
-            this.goods.push(good)
+            basketgoodtest.amount = amount
+            this.goods.push(basketgoodtest)
         }
     }
 
